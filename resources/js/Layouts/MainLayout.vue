@@ -1,18 +1,17 @@
 <template>
-    <Link href="/">Index Page</Link>&nbsp
+    <Link href="/">Index Page</Link>&nbsp;
     <Link href="/hello">Show Page</Link>
 
-    The elapsed time is {{ timer }}
+    <div>The elapsed time is {{ timer }}</div>
+   
     <slot>Default</slot>
-
 </template>
 
 <script setup>
-    import {Link} from '@inertiajs/inertia-vue3'
-    import {ref} from 'vue'
+    import { Link } from '@inertiajs/inertia-vue3'
+    import { ref } from 'vue'
 
-    // let value = '2'
-
-    const timer = ref(value, 1)
+    const timer = ref(1)
+    setInterval(()=> timer.value++, 1000)
 
 </script>
