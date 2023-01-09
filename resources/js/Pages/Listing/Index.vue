@@ -1,13 +1,17 @@
 <template>
     <div v-for="listing in listings" :key="listing.id">
+        <Link :href="`/listing/${listing.id}`">
 
-        <Link :href="`listing/${listing.id}`">{{ listing.city }}</Link>
+        <ListingAddress :listing="listing"/> 
+
+    </Link>
        
     </div>
 
 </template>
 
 <script setup>
+import ListingAddress from '@/Components/ListingAddress.vue'
 import {Link} from '@inertiajs/inertia-vue3'
     defineProps({
         listings: Array,

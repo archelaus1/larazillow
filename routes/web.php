@@ -19,4 +19,12 @@ Route::GET('/', [IndexController::class, 'index']);
 
 Route::GET('/hello', [IndexController::class, 'show']);
 
-Route::resource('listing', ListingController::class )->only(['index', 'show']);
+// Route::GET('/listing', [IndexController::class, 'index']);
+
+// Route::GET('/listing/{$listing}', [IndexController::class, 'show']);
+
+// Route::POST('/listing/create', [IndexController::class, 'create']);
+
+// Route::POST('/listing', [IndexController::class, 'store']);
+
+Route::resource('listing', ListingController::class )->only(['index', 'show', 'create', 'store']);

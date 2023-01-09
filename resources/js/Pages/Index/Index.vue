@@ -5,7 +5,8 @@
         <h2>{{ message }}</h2>
         <p>{{ text }}</p>
 
-        <Link href="/listing">All listings</Link>
+       <button> <Link href="/listing">All listings</Link></button> 
+       <button> <Link href="/listing/create">Create listings</Link></button>
 
 </template>
 
@@ -24,4 +25,17 @@ h2 {
     color: green;
     font-weight:bolder;
 }
+
+button, link {
+    
+    color: white;
+    background-color: green;
+    display: inline-block;
+    margin-right: 10px;
+    border-radius: 10px;
+    width: auto;
+    padding: 5px 20px 5px 20px;
+    border: none;
+}
+
 </style>
