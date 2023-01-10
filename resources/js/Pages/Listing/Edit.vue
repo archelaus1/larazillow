@@ -1,10 +1,10 @@
 <template>
-    <form @submit.prevent="create">
+    <form @submit.prevent="update">
       <div class="grid grid-cols-6 gap-4">
         <div class="col-span-2">
           <label class="label">Beds</label>
-          <input v-model.number="form.beds" type="text" class="input" />
-          <div v-if="form.errors.beds" class="input-error">
+          <input v-model.number="form.beds" type="text" class="input"/>
+          <div v-if="form.errors.beds" class="input-error" >
             {{ form.errors.beds }}</div>
         </div>
   
@@ -29,7 +29,7 @@
             {{ form.errors.city }}</div>
         </div>
   
-        <div class="col-span-2 ">
+        <div class="col-span-2">
           <label class="label">Post Code</label>
           <input v-model="form.code" type="text" class="input"/>
           <div v-if="form.errors.code" class="input-error">
@@ -38,7 +38,7 @@
   
         <div class="col-span-4">
           <label class="label">Street</label>
-          <input v-model="form.street" type="text" class="input" />
+          <input v-model="form.street" type="text" class="input"/>
           <div v-if="form.errors.street" class="input-error">
             {{ form.errors.street }}</div>
         </div>
@@ -58,7 +58,7 @@
         </div>
   
         <div class="col-span-6">
-          <button type="submit" class="btn-primary">Create</button>
+          <button class="btn-primary" type="submit">Edit</button>
         </div>
       </div>
     </form>
@@ -66,17 +66,21 @@
   
   <script lang="ts" setup>
   import { useForm } from '@inertiajs/inertia-vue3'
-  const form = useForm({
-    beds: 0,
-    baths: 0,
-    area: 0,
-    city: null,
-    street: null,
-    code: null,
-    street_nr: null,
-    price: 0,
+  const props = defineProps({
+    listing: Object,
+
   })
-  const create = () => form.post(route('listing.store'))
+  const form = useForm({
+    beds: props.listing.beds,
+    baths: props.listing.baths,
+    area: props.listing.area,
+    city: props.listing.city,
+    street: props.listing.street,
+    code: props.listing.code,
+    street_nr: props.listing.street_nr,
+    price: props.listing.price,
+  })
+  const update = () => form.put(route('listing.update', {listing: props.listing.id}))
   </script>
   
   <style scoped>

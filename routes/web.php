@@ -27,4 +27,4 @@ Route::GET('/hello', [IndexController::class, 'show']);
 
 // Route::POST('/listing', [IndexController::class, 'store']);
 
-Route::resource('listing', ListingController::class )->only(['index', 'show', 'create', 'store']);
+Route::resource('listing', ListingController::class );
