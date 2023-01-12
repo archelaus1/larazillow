@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\UserAccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,14 +19,18 @@ use App\Http\Controllers\ListingController;
 
 Route::GET('/', [IndexController::class, 'index']);
 
-Route::GET('/hello', [IndexController::class, 'show']);
+Route::GET('/hello', [IndexController::class, 'show'])->middleware('auth');
 
-// Route::GET('/listing', [IndexController::class, 'index']);
+Route::resource('listing', ListingController::class)->middleware('auth');
 
-// Route::GET('/listing/{$listing}', [IndexController::class, 'show']);
+Route::resource('listing', ListingController::class);
 
-// Route::POST('/listing/create', [IndexController::class, 'create']);
+Route::GET('login', [AuthController::class, 'create'])->name('login');
 
-// Route::POST('/listing', [IndexController::class, 'store']);
+Route::POST('login', [AuthController::class, 'store'])->name('login.store');
 
-Route::resource('listing', ListingController::class );
+Route::DELETE('logout', [AuthController::class, 'destroy'])->name('logout');
+
+Route::POST('/listing/{listing}', [ListingController::class, 'destroy'])->middleware('auth');
+
+Route::resource('user-account', UserAccountController::class)->only(['create', 'store']);

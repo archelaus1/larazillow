@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Listing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ListingController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth')->only(['create', 'edit', 'udpate', 'destroy']);
+        
+    }
     
     public function index()
     {
@@ -26,12 +33,7 @@ class ListingController extends Controller
     
     public function store(Request $request)
     {
-        // dd($request->all());
-        
-        Listing::create(
-            
-            // $request->all());
-            
+        $request->user()->listings()->create(
             $request->validate([
                 'beds' => 'required|integer|min:0|max:20',
                 'baths' => 'required|integer|min:0|max:20',
@@ -98,6 +100,8 @@ class ListingController extends Controller
     {
         $listing->delete();
 
-        return redirect()->back()->with('success', 'Listing deleted');
+        // return redirect()->back()->with('success', 'Listing deleted');
+
+        return redirect()->intended('/listing');
     }
 }
