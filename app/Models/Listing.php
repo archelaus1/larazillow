@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Offer;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class Listing extends Model
@@ -17,10 +19,22 @@ class Listing extends Model
         'beds', 'baths', 'area', 'city', 'code', 'street', 'street_nr', 'price'
     ];
 
+    protected $sortable = [
+        'price', 'created_at'
+    ];
+
     public function owner(): BelongsTo {
         return $this->belongsTo(\App\Models\User::class,
         'by_user_id'
         );
+    }
+
+    public function images(): HasMany {
+        return $this->hasMany(ListingImage::class);
+    }
+
+    public function offers(): HasMany {
+        return $this->hasMany(Offer::class, 'listing_id');
     }
 
     public function scopeMostRecent($query)
@@ -48,6 +62,15 @@ class Listing extends Model
         )->when(
             $filters['areaTo'] ?? false,
             fn ($query, $value) => $query->where('area', '<=', $value)
+        )->when(
+            $filters['deleted'] ?? false,
+            fn ($query, $value) => $query->withTrashed()
+        )->when(
+            $filters['by'] ?? false,
+            fn($query, $value) => 
+            !in_array($value, $this->sortable)  
+                ? $query : 
+                $query->orderBy($value, $filters['order'] ?? 'desc')
         );
     }
 }
